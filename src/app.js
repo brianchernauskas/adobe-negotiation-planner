@@ -240,11 +240,11 @@ const ACV_TIERS = {
 const PRODUCT_LABELS = {
   ccpro: 'Creative Cloud Pro', ccsingle: 'Single-App Plans', acrobat: 'Acrobat',
   sign: 'Acrobat Sign', firefly: 'Firefly / GenStudio', express: 'Adobe Express',
-  stock: 'Adobe Stock', aem: 'Experience Manager', analytics: 'Analytics / CJA',
+  stock: 'Adobe Stock', frameio: 'Frame.io', aem: 'Experience Manager', analytics: 'Analytics / CJA',
   aep: 'Experience Platform', marketo: 'Marketo Engage', workfront: 'Workfront',
   commerce: 'Adobe Commerce', target: 'Target', semrush: 'Semrush',
 };
-const CREATIVE_PRODUCTS = ['ccpro', 'ccsingle', 'acrobat', 'sign', 'firefly', 'express', 'stock'];
+const CREATIVE_PRODUCTS = ['ccpro', 'ccsingle', 'acrobat', 'sign', 'firefly', 'express', 'stock', 'frameio'];
 const EXPERIENCE_PRODUCTS = ['aem', 'analytics', 'aep', 'marketo', 'workfront', 'commerce', 'target', 'semrush'];
 
 const VENDOR_LABELS = {
@@ -1021,7 +1021,7 @@ function buildMnaImplications(s) {
   if (comp.includes('assets')) {
     items.push({
       priority: 'should', title: 'Content and licensed assets need a plan',
-      desc: 'Brand assets in Creative Cloud Libraries, Experience Manager repositories, Acrobat Sign agreement records, and Adobe Stock licensed assets are tied to the licensing organization. Confirm how Stock licenses carry over for assets used in the other entity\'s materials, and export or migrate Sign audit trails and AEM content before any entitlement ends.',
+      desc: 'Brand assets in Creative Cloud Libraries, Experience Manager repositories, Frame.io projects and review history, Acrobat Sign agreement records, and Adobe Stock licensed assets are tied to the licensing organization. Confirm how Stock licenses carry over for assets used in the other entity\'s materials, and export or migrate Sign audit trails and AEM content before any entitlement ends.',
     });
   }
 
@@ -1230,6 +1230,18 @@ function buildTactics(s, tier, leverage, fc, increase) {
     });
   }
 
+  // Frame.io: Creative Cloud subscriptions include a Frame.io entitlement, so
+  // separately purchased Frame.io plans often pay for collaboration users who
+  // already have access through their Creative Cloud license.
+  if (s.products?.includes('frameio')) {
+    const hasCC = s.products.includes('ccpro') || s.products.includes('ccsingle');
+    tactics.push({
+      title: 'Reconcile Paid Frame.io Against What Creative Cloud Already Includes',
+      desc: `${hasCC ? 'Creative Cloud subscriptions include a Frame.io entitlement — dedicated storage and a limited number of projects — at no extra charge. Frame.io Pro, Team, and Enterprise plans are billed separately, so check whether the paid seats you hold belong to people who already have access through Creative Cloud. ' : ''}Frame.io storage scales with paid seats, which pushes storage-heavy video teams to buy members they do not need just to get capacity. Negotiate storage as its own line rather than as a by-product of seat count, bring Frame.io into the same agreement and anniversary as the rest of your Adobe estate${hasEtla(s) ? ' rather than a separate Frame.io order' : ''}, and archive completed projects before renewal so you are not sizing storage against footage nobody will open again.`,
+      impact: hasCC ? 'medium' : 'low',
+    });
+  }
+
   if (s.changeEvents?.includes('platform')) {
     tactics.push({
       title: 'Keep a Platform Bundle Separable',
@@ -1411,6 +1423,7 @@ function buildQuestions(s, tier) {
   q.push('What reduction rights can we have at each anniversary, and up to what percentage?');
   if (hasAny(s, EXPERIENCE_PRODUCTS)) q.push('How are overage charges calculated on our contracted metrics, and can we have headroom and a grace period instead?');
   if (s.products?.includes('firefly') || s.changeEvents?.includes('ai')) q.push('How are generative credits allocated — can they be pooled, do unused credits roll over, and what do additional credits cost?');
+  if (s.products?.includes('frameio')) q.push('Which of our Frame.io users are already covered by their Creative Cloud entitlement, and can Frame.io storage be priced separately from seat count?');
   if (s.changeEvents?.includes('platform') || s.products?.includes('semrush')) q.push('If we take CX Enterprise, what is the line-item price of each module, and can we remove one at anniversary?');
   if (s.mnaEnabled && s.mnaStage !== 'confidential') {
     if (s.mnaType === 'divesting') q.push('How can the divested business keep using licenses during the transition, and how do we reduce our quantities at close?');
