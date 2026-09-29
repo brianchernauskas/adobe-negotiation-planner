@@ -171,14 +171,15 @@ const RANGES_LAST_UPDATED = 'September 16, 2026';
 
    Sources checked September 16, 2026:
      • Semrush close — news.adobe.com, April 28, 2026
-     • Topaz Labs — news.adobe.com, June 25, 2026 (close expected H2 2026)
+     • Topaz Labs — news.adobe.com, June 25, 2026; close confirmed
+       blog.adobe.com, September 23, 2026 (re-checked September 29, 2026)
      • CEO transition — Adobe Q3 FY26 results, September 10, 2026
      • VIP Marketplace increase — reseller notices of Adobe's June 2026 pricelist
      • Acrobat Standard increase — reseller notices, April 1, 2026
-   Re-verify at each monthly review; the Topaz close is still pending.
+   Re-verify at each monthly review.
    ──────────────────────────────────────────────────────────────────────────── */
 const ADOBE_CONTEXT = {
-  verifiedOn: 'September 16, 2026',
+  verifiedOn: 'September 29, 2026',
   rows: [
     {
       id: 'ceo', kind: 'corporate', date: 'Dec 1, 2026',
@@ -209,10 +210,10 @@ const ADOBE_CONTEXT = {
       when: s => s.mnaEnabled || s.products?.includes('semrush') || s.changeEvents?.includes('platform'),
     },
     {
-      id: 'topaz', kind: 'acquisition', date: 'Announced Jun 25, 2026',
-      event: 'Topaz Labs acquisition (pending)',
-      detail: 'AI image and video enhancement. Expected to close in the second half of 2026. Adobe says Topaz products stay available standalone, with capabilities integrated into Firefly, Firefly Services and Creative Cloud.',
-      implication: 'If your teams license Topaz separately, do not renew it for multiple years ahead of close — the capability may arrive inside Creative Cloud or Firefly entitlements you already pay for. Ask Adobe directly what the roadmap is for existing Topaz subscriptions.',
+      id: 'topaz', kind: 'acquisition', date: 'Sep 23, 2026',
+      event: 'Topaz Labs acquisition closed',
+      detail: 'AI image and video enhancement, announced June 25 and closed September 23, 2026. Topaz stays a standalone brand and its apps and models remain available on their own; capabilities are coming to Firefly and Photoshop first, with more Creative Cloud workflows to follow. Adobe has not said whether those capabilities will need a separate subscription or credits.',
+      implication: 'If your teams license Topaz separately, do not renew it for multiple years now that it is an Adobe product — the capability is heading into Firefly and Photoshop entitlements you may already pay for. Ask Adobe in writing whether Topaz features inside Creative Cloud will draw on generative credits or a new add-on, and keep any standalone Topaz renewal short and separable so it cannot be pulled into an ETLA or VIP bundle.',
       when: s => s.mnaEnabled || ['ccpro', 'ccsingle', 'firefly'].some(p => s.products?.includes(p)),
     },
     {
@@ -1049,7 +1050,7 @@ function mnaSectionHTML(s, mna) {
           </div>`).join('')}
         </div>
         <p style="margin-top:14px;font-size:.82rem;line-height:1.7;color:var(--text-muted);">
-          Adobe's own acquisitions — Semrush, the pending Topaz Labs deal, and the abandoned Figma deal — are covered in the Corporate &amp; Pricing Context section above. Commercial guidance only; have counsel review the actual assignment and affiliate clauses.
+          Adobe's own acquisitions — Semrush, Topaz Labs (closed September 23, 2026), and the abandoned Figma deal — are covered in the Corporate &amp; Pricing Context section above. Commercial guidance only; have counsel review the actual assignment and affiliate clauses.
         </p>
       </div>
     </div>`;
